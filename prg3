@@ -1,0 +1,38 @@
+#3
+import nltk, string, matplotlib.pyplot as plt
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from gensim.models import Word2Vec
+from sklearn.decomposition import PCA
+
+corpus = [
+    "Diabetes is a chronic disease that affects the way the body processes blood sugar.",
+    "Hypertension or high blood pressure can lead to heart disease and stroke.",
+    "The patient was diagnosed with pneumonia and prescribed antibiotics.",
+    "Insulin therapy is commonly used for type 1 diabetes patients.",
+    "Cardiovascular diseases are the leading cause of death worldwide."
+]
+
+nltk.download("punkt")
+nltk.download("stopwords")
+
+stop_words = set(stopwords.words("english"))
+
+data = [[w.strip(string.punctuation).lower()
+         for w in s.split()
+         if w.lower() not in stop_words]
+        for s in corpus]
+
+model = Word2Vec(data, vector_size=300, window=5, min_count=1)
+
+print(model.wv.most_similar("diabetes"))
+print(model.wv.most_similar(positive=["hypertension", "heart"], negative=["stroke"]))
+
+words = model.wv.index_to_key
+vectors = PCA(n_components=2).fit_transform([model.wv[w] for w in words])
+
+for i, word in enumerate(words):
+    plt.scatter(vectors[i, 0], vectors[i, 1])
+    plt.annotate(word, (vectors[i, 0], vectors[i, 1]))
+
+plt.show()
