@@ -1,0 +1,19 @@
+#9
+from pydantic import BaseModel
+import wikipedia, json
+from typing import Optional
+class InstituteDetails(BaseModel):
+    name: str
+    founder: Optional[str] = None
+    founded_year: Optional[str] = None
+    branches: Optional[str] = None
+    number_of_employees: Optional[str] = None
+    summary: str
+def extract_details(name):
+    try:
+        summary= wikipedia.summary(name,sentences=6)
+        return InstituteDetails(name=name, summary=summary)
+    except Exception as e:
+        return InstituteDetails(name=name,summary=f"Error:{e}")
+name= input("Enter Institute Name:")
+print(json.dumps(extract_details(name).model_dump(),indent=4))
