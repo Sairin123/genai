@@ -1,0 +1,6 @@
+#5
+import gensim.downloader as api 
+m = api.load("glove-wiki-gigaword-100") 
+seed = input("Enter seed word: ") 
+w = [x[0] for x in m.most_similar(seed, topn=5)] 
+print(f"{seed.capitalize()} inspired {w[0]}, {w[1]}, and {w[2]}. Together with {w[3]} and {w[4]}, they created a brighter future.")
