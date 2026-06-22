@@ -1,0 +1,14 @@
+import os
+from langchain_cohere import ChatCohere
+
+# Read text from a file
+with open("input.txt", "r", encoding="utf-8") as file:
+    text = file.read()
+
+os.environ["COHERE_API_KEY"] = "4XlX0wTsyCSN5LN5TRlvFQ2lcYKBQsQibRijACqd"
+
+llm = ChatCohere()
+
+response = llm.invoke("Summarize in points: " + text)
+
+print(response.content)
