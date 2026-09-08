@@ -1,4 +1,4 @@
-import gensim.downloader as api
+import gensim.downloader as ap
 
 model=api.load("word2vec-google-news-300")
 
